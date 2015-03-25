@@ -1,5 +1,2 @@
-require "restminer/version"
-
-module Restminer
-  # Your code goes here...
-end
+require_relative "restminer/version"
+require_relative "restminer/redmine"
