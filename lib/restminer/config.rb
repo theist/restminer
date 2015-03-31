@@ -21,7 +21,7 @@ module Restminer
         url = ""
         api_key = ""
         if File.exist?(file)
-          File.new("#{ENV['HOME']}/.restminer/config").readlines.each {|line| eval line}
+          File.new(file).readlines.each {|line| eval line}
         end
         Config.new(url,api_key)
       end
