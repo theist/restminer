@@ -14,13 +14,6 @@ module Restminer
     def get_tickets
       puts @config.connection.get('/issues.json').body
     end
-
-    class << self
-      def cli
-        r = Redmine.new
-        r.get_tickets
-      end
-    end
   end
 end
 
