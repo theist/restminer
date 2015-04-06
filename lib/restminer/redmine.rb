@@ -8,7 +8,7 @@ module Restminer
     attr_accessor :config
 
     def initialize
-      @config = Config.from_default_file
+      @config = Config.instance.from_default_file
     end
 
     def get_tickets

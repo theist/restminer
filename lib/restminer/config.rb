@@ -1,12 +1,22 @@
+require 'singleton'
+
 module Restminer
   class Config
+    include Singleton
 
     attr_accessor :url
     attr_accessor :api_key
 
     attr_accessor :connection
 
-    def initialize(url,api_key)
+    def initialize
+      self.url= nil
+      self.api_key = nil
+
+      self.connection = nil
+    end
+
+    def setup(url,api_key)
       self.url=url
       self.api_key=api_key
 
@@ -14,21 +24,20 @@ module Restminer
         f.adapter Faraday.default_adapter
       end
       @connection.basic_auth(api_key,api_key)
+      return self
     end
 
-    class << self
-      def from_file(file)
-        url = ""
-        api_key = ""
-        if File.exist?(file)
-          File.new(file).readlines.each {|line| eval line}
-        end
-        Config.new(url,api_key)
+    def from_file(file)
+      url = ""
+      api_key = ""
+      if File.exist?(file)
+        File.new(file).readlines.each {|line| eval line}
       end
+      setup(url,api_key)
+    end
 
-      def from_default_file
-        Config.from_file("#{ENV['HOME']}/.restminer/config")
-      end
+    def from_default_file
+      from_file("#{ENV['HOME']}/.restminer/config")
     end
   end
 end
