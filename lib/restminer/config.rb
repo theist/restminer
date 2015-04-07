@@ -9,10 +9,11 @@ module Restminer
 
     attr_accessor :connection
 
+    @configured = false
+
     def initialize
       self.url= nil
       self.api_key = nil
-
       self.connection = nil
     end
 
@@ -24,7 +25,12 @@ module Restminer
         f.adapter Faraday.default_adapter
       end
       @connection.basic_auth(api_key,api_key)
+      @configured = true
       return self
+    end
+
+    def configured?
+      return @configured
     end
 
     def from_file(file)
