@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
 require_relative '../lib/restminer'
 
-r = Restminer::Redmine.new
-r.get_tickets
+Restminer::CLI.start(ARGV)
