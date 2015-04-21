@@ -37,6 +37,16 @@ module Restminer
         from_json(json,true)
       end
     end
+
+    class << self
+      def from_ref(ref)
+        if ref['id'] then
+          return new(ref['id'])
+        else
+          return nil
+        end
+      end
+    end
   end
 end
 

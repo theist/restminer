@@ -1,6 +1,7 @@
 require 'faraday'
 require 'json'
 require_relative 'config'
+require_relative 'user'
 require 'active_model'
 
 module Restminer
@@ -12,7 +13,14 @@ module Restminer
     def attributes=(hash)
       hash.each do |k,v|
         class_eval { attr_accessor k}
-        send("#{k}=", v)
+        case k
+        when 'author'
+          send("#{k}=", User.from_ref(v))
+        when 'assigned_to'
+          send("#{k}=", User.from_ref(v))
+        else
+          send("#{k}=", v)
+        end
       end
     end
 
