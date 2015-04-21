@@ -1,4 +1,8 @@
 require "thor"
+require "terminfo"
+require "colorize"
+
+COLS = TermInfo.screen_columns
 
 module Restminer
   class TicketCLI < Thor
@@ -6,6 +10,19 @@ module Restminer
     def read(id)
       r = Redmine.new
       t = Ticket.new(id)
+      puts "-".green * COLS
+      puts "[#{t.tracker}]".blue + "[##{t.id}]".green + "   #{t.subject}".white
+      puts "-".green * COLS
+      puts "Autor:      ".green + "#{t.author}".red
+      puts "Asignado a: ".green + "#{t.assigned_to}".red
+      puts "Estado:     ".green + "#{t.status}".red
+      puts "Prioridad:  ".green + "#{t.priority}".red
+      #puts "Categoria:  ".green + "#{t.category}".red
+      puts "-".green * COLS
+      puts t.description
+      puts "-".green * COLS
+      puts "#{r.config.url}/issues/#{t.id}"
+      puts "-".green * COLS
     end
   end
 
