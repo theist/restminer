@@ -1,4 +1,8 @@
 require "thor"
+require "terminfo"
+require "colorize"
+
+COLS = TermInfo.screen_columns
 
 module Restminer
   class TicketCLI < Thor
