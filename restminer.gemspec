@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "faraday", "~> 0"
   spec.add_dependency "thor", "~> 0"
+  spec.add_dependency "activemodel"
 end
