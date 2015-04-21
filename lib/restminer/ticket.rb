@@ -8,14 +8,10 @@ module Restminer
   include ActiveModel::Serializers::JSON
     attr_accessor :config
 
-    attr_accessor :id, :project, :tracker, :status, :priority,
-                  :author, :assigned_to, :fixed_version, :subject,
-                  :description, :start_date, :done_ratio, :spent_hours,
-                  :created_on, :updated_on, :closed_on
-
     @new_ticket = true
     def attributes=(hash)
       hash.each do |k,v|
+        class_eval { attr_accessor k}
         send("#{k}=", v)
       end
     end
