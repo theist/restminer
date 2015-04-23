@@ -1,29 +1,18 @@
 require 'faraday'
 require 'json'
 require_relative 'config'
-require_relative 'user'
-require_relative 'project'
 require 'active_model'
 
 module Restminer
-  class Ticket
+  class Project
   include ActiveModel::Serializers::JSON
     attr_accessor :config
 
-    @new_ticket = true
+    @new_prj = true
     def attributes=(hash)
       hash.each do |k,v|
         class_eval { attr_accessor k}
-        case k
-        when 'project'
-          send("#{k}=", Project.from_ref(v))
-        when 'author'
-          send("#{k}=", User.from_ref(v))
-        when 'assigned_to'
-          send("#{k}=", User.from_ref(v))
-        else
-          send("#{k}=", v)
-        end
+        send("#{k}=", v)
       end
     end
 
@@ -32,16 +21,26 @@ module Restminer
     end
 
     def to_s
-      return "[Ticket:#{id}] #{subject}"
+      return name
     end
 
     def initialize(id = nil)
       @config = Config.instance
       raise 'Main Redmine class not configured' unless @config.configured?
       if id
-        @new_ticket = false
-        json = @config.connection.get("/issues/#{id}.json").body
+        @new_prj = false
+        json = @config.connection.get("/projects/#{id}.json").body
         from_json(json,true)
+      end
+    end
+
+    class << self
+      def from_ref(ref)
+        if ref['id'] then
+          return new(ref['id'])
+        else
+          return nil
+        end
       end
     end
   end

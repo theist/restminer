@@ -11,7 +11,7 @@ module Restminer
       r = Redmine.new
       t = Ticket.new(id)
       puts "-".green * COLS
-      puts "[#{t.tracker}]".blue + "[##{t.id}]".green + "   #{t.subject}".white
+      puts "[#{t.tracker}]".blue + "[#{t.project}:##{t.id}]".green + "   #{t.subject}".white
       puts "-".green * COLS
       puts "Autor:      ".green + "#{t.author}".red
       puts "Asignado a: ".green + "#{t.assigned_to}".red
