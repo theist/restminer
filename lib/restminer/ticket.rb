@@ -2,6 +2,7 @@ require 'faraday'
 require 'json'
 require_relative 'config'
 require_relative 'user'
+require_relative 'tracker'
 require_relative 'project'
 require 'active_model'
 
@@ -15,6 +16,8 @@ module Restminer
       hash.each do |k,v|
         class_eval { attr_accessor k}
         case k
+        when 'tracker'
+          send("#{k}=", Tracker.from_ref(v))
         when 'project'
           send("#{k}=", Project.from_ref(v))
         when 'author'
