@@ -2,8 +2,6 @@ require 'faraday'
 require 'json'
 require_relative 'config'
 require 'active_model'
-require 'pry'
-
 
 module Restminer
   class Tracker
