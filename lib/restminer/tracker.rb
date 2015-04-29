@@ -2,22 +2,31 @@ require 'faraday'
 require 'json'
 require_relative 'config'
 require 'active_model'
+require 'pry'
+
 
 module Restminer
   class Tracker
 
     attr_accessor :config
 
-    attr_accessor :id
-    attr_accessor :name
+    def attributes=(hash)
+      hash.each do |k,v|
+        class_eval { attr_accessor k}
+        send("#{k}=", v)
+      end
+    end
+
+    def attributes
+      instance_values
+    end
 
     def initialize(i=nil)
       @config = Config.instance
       raise 'Main Redmine class not configured' unless @config.configured?
       if i
         t = TrackerList.new
-        @id = t.trackers[i].id
-        @name = t.trackers[i].name
+        self.attributes = t.trackers[i].attributes
       end
     end
 
@@ -49,8 +58,7 @@ module Restminer
       list = eval json
       list[:trackers].each do |tracker|
         t = Tracker.new
-        t.id = tracker[:id]
-        t.name = tracker[:name]
+        t.attributes = tracker
         @trackers[tracker[:id]] = t
       end
     end
