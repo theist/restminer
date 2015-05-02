@@ -4,6 +4,7 @@ require_relative 'config'
 require_relative 'user'
 require_relative 'tracker'
 require_relative 'status'
+require_relative 'priority'
 require_relative 'project'
 require 'active_model'
 
@@ -17,6 +18,8 @@ module Restminer
       hash.each do |k,v|
         class_eval { attr_accessor k}
         case k
+        when 'priority'
+          send("#{k}=", Priority.from_ref(v))
         when 'status'
           send("#{k}=", Status.from_ref(v))
         when 'tracker'
