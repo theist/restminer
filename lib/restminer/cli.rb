@@ -5,6 +5,19 @@ require "colorize"
 COLS = TermInfo.screen_columns
 
 module Restminer
+  class QueryCLI < Thor
+    desc "list", "list visible queries"
+    def list
+      r = Redmine.new
+      q = QueriesList.new
+      q.queries.each do | item |
+        if item
+          puts "#{item.id} #{item}"
+        end
+      end
+    end
+  end
+
   class TicketCLI < Thor
     desc "Read INT", "reads ticket i"
     def read(id)
@@ -34,6 +47,8 @@ module Restminer
     end
     desc "ticket SUBCOMMAND ... ARGS", "Manage tickets"
     subcommand "ticket", TicketCLI
+    desc "query SUBCOMMAND ... ARGS", "Manage queries"
+    subcommand "query", QueryCLI
   end
 end
 
