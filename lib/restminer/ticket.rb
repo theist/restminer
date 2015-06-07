@@ -9,6 +9,36 @@ require_relative 'project'
 require 'active_model'
 
 module Restminer
+
+  class TicketList
+  include ActiveModel::Serializers::JSON
+    attr_accessor :config
+    attr_accessor :ticket_list
+
+    def attributes
+      instance_values
+    end
+
+    def attributes=(json)
+      if json.is_a?(Array)
+        json.each do |ticket|
+          t = Ticket.new
+          t.from_json(ticket.to_json,false)
+          @ticket_list.push(t)
+        end
+      end
+    end
+
+    def initialize(filter = nil)
+      @ticket_list = []
+      @config = Config.instance
+      raise 'Main Redmine class not configured' unless @config.configured?
+      json = @config.connection.get("/issues.json").body
+      from_json(json,true)
+    end
+
+  end
+
   class Ticket
   include ActiveModel::Serializers::JSON
     attr_accessor :config
