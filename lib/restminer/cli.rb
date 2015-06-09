@@ -43,7 +43,7 @@ module Restminer
     desc "list", "Ticket listings"
     def list
       r = Redmine.new
-      r.get_tickets
+      l = TicketList.new
     end
     desc "ticket SUBCOMMAND ... ARGS", "Manage tickets"
     subcommand "ticket", TicketCLI
