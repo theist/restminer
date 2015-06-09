@@ -39,6 +39,13 @@ module Restminer
     end
 
     class << self
+      def me
+        a = new
+        json = a.config.connection.get("/users/current.json").body
+        a.from_json(json,true)
+        return a
+      end
+
       def from_ref(ref)
         if ref['id'] then
           return new(ref['id'])
